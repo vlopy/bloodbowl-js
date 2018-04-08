@@ -24,17 +24,22 @@ Sprint.prototype.rollDice = function() {
       } else {
         rbutton.hide();
       }
-    } else {
+    } else if(this.player.usedSkills.indexOf('sure feet') == -1) {
       disableReroll = false;
       this.reroll = 'skill';
       rbutton.text('Re-Roll (skill)');
       rbutton.show();
+    } else {
+      rbutton.hide();
     }
   } else {
     if(this.reroll == 'team') {
       gGame.useReRoll(this.player.team);
+    } else if(this.reroll == 'skill') {
+      this.player.usedSkills.push('sure feet');
+    } else {
+      rbutton.hide();
     }
-    rbutton.hide();
   }
   this.dice.rollD6(this.player + ': sprint');
   if(this.dice.result[0] == 1) {

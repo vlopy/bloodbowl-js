@@ -13,6 +13,8 @@ var Player = function(pTeam, pName, pNumber, pPosition, pMovement,
   this.agility = pAgility;
   this.armor = pArmor;
   this.skills = pSkills;
+  // Use the skills once during the player turn
+  this.usedSkills = [];
   // Available movement for the turn, sprints excluded
   this.mv = 0;
   // Available sprints for every turn
@@ -47,6 +49,7 @@ Player.prototype.newTurn = function() {
   this.throwingAction = false;
   this.blockAction = false;
   this.pushedSquares = [];
+  this.usedSkills = [];
   this.pushedPlayer = [];
   // Set the movement available for the turn with sprints
   switch(this.state) {

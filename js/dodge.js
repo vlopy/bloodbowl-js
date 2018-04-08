@@ -24,15 +24,19 @@ Dodge.prototype.rollDice = function() {
       } else {
         rbutton.hide();
       }
-    } else {
+    } else if(this.player.usedSkills.indexOf('dodge') == -1) {
       disableReroll = false;
       this.reroll = 'skill';
       rbutton.text('Re-Roll (skill)');
       rbutton.show();
+    } else {
+      rbutton.hide();
     }
   } else {
     if(this.reroll == 'team') {
       gGame.useReRoll(this.player.team);
+    } else if(this.reroll == 'skill') {
+      this.player.usedSkills.push('dodge');
     }
     rbutton.hide();
   }
