@@ -109,7 +109,7 @@ Player.prototype.aroundMe = function(opponent) {
 // Return the number of assists in the fight
 Player.prototype.fightAssist = function(defender) {
   var attacker = this, opponentAssist = 0, teamAssist = 0;
-  var blitzSquare = gGame.moving != undefined ? gGame.moving.lastSquare() : undefined;
+  var blitzSquare = gGame.actions.path != undefined ? gGame.actions.path.lastSquare() : undefined;
   var oldSquare = undefined;
   if(blitzSquare != undefined) {
     blitzSquare = gGame.field.square(blitzSquare.x, blitzSquare.y);
