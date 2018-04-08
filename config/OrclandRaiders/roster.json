@@ -1,0 +1,131 @@
+{
+  "team": "OrclandRaiders",
+  "color": "red",
+  "race": "orc",
+  "reroll": 3,
+  "price": 60,
+  "players": [
+    {
+      "position": "thrower",
+      "number": 1,
+      "name": "Mistigri",
+      "movement": 5,
+      "strength": 3,
+      "agility": 3,
+      "armor": 8,
+      "skills": [ "sure hands", "pass" ],
+      "value": 70
+    },
+    {
+      "position": "black-orc",
+      "number": 2,
+      "name": "Boubba",
+      "movement": 4,
+      "strength": 4,
+      "agility": 2,
+      "armor": 9,
+      "skills": [],
+      "value": 80
+    },
+    {
+      "position": "black-orc",
+      "number": 3,
+      "name": "GreenPeace",
+      "movement": 4,
+      "strength": 4,
+      "agility": 2,
+      "armor": 9,
+      "skills": [],
+      "value": 80
+    },
+    {
+      "position": "black-orc",
+      "number": 4,
+      "name": "BO3",
+      "movement": 4,
+      "strength": 4,
+      "agility": 2,
+      "armor": 9,
+      "skills": [],
+      "value": 80
+    },
+    {
+      "position": "black-orc",
+      "number": 5,
+      "name": "BO4",
+      "movement": 4,
+      "strength": 4,
+      "agility": 2,
+      "armor": 9,
+      "skills": [],
+      "value": 80
+    },
+    {
+      "position": "blitzer",
+      "number": 6,
+      "name": "B1",
+      "movement": 6,
+      "strength": 3,
+      "agility": 3,
+      "armor": 9,
+      "skills": [ "block" ],
+      "value": 80
+    },
+    {
+      "position": "blitzer",
+      "number": 7,
+      "name": "B2",
+      "movement": 6,
+      "strength": 3,
+      "agility": 3,
+      "armor": 9,
+      "skills": [ "block" ],
+      "value": 80
+    },
+    {
+      "position": "blitzer",
+      "number": 8,
+      "name": "B3",
+      "movement": 6,
+      "strength": 3,
+      "agility": 3,
+      "armor": 9,
+      "skills": [ "block" ],
+      "value": 80
+    },
+    {
+      "position": "blitzer",
+      "number": 9,
+      "name": "B4",
+      "movement": 6,
+      "strength": 3,
+      "agility": 3,
+      "armor": 9,
+      "skills": [ "block" ],
+      "value": 80
+    },
+    {
+      "position": "linemen",
+      "number": 10,
+      "name": "Greenou",
+      "movement": 5,
+      "strength": 3,
+      "agility": 3,
+      "armor": 9,
+      "skills": [],
+      "value": 50
+    },
+    {
+      "position": "linemen",
+      "number": 11,
+      "name": "L2",
+      "movement": 5,
+      "strength": 3,
+      "agility": 3,
+      "armor": 9,
+      "skills": [],
+      "value": 50
+    }
+  ]
+}
+

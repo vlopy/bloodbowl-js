@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+    <link rel="stylesheet" type="text/css" href="css/index.css" media="all">
+  </head>
+  <body onload="match()">
+    <div class="left-panel">
+      <div id="turn-counter" class="turn-class">1</div>
+      <button class="turn-button" onclick="endTeamTurn()">End Team Turn</button>
+      <div class="actions-class">
+        <button onclick="gGame.actions.prepend(new Blitz())" class="blitz-button">Blitz</button>
+        Action<br/>Stack
+        <div id="actions" class="button-container">
+        </div>
+        <button class="bb-button" onclick="gGame.actions.execute()">Execute</button>
+      </div>
+      <div class="dices-class">
+        Dices
+        <div id="dice-question" class="question-class"></div>
+        <div id="dices" class="dice-container">
+        </div>
+        <!-- inline buttons -->
+        <button id="execute-actions" class="bb-button"
+          onclick="gGame.actions.executeCurrent()">Keep</button>
+        <button id="re-roll"  class="bb-button" onclick="gGame.actions.reRoll()">Re-Roll</button>
+      </div>
+      <div class="reroll-class">
+        Team Re-Rolls<br/>
+        <div id="home-reroll"></div>
+        <div id="visitor-reroll"></div>
+      </div>
+    </div>
+    <div id="field" class="field-class"></div>
+    <div class="score-class">
+      HOME
+      <div id="home-score">0</div>
+      VISITOR
+      <div id="visitor-score">0</div>
+    </div>
+    <div class="comments-class">
+      Comments
+      <div id="comments">
+      </div>
+    </div>
+    <div class="stats-class">
+      Stats
+      <div id="stats">
+      </div>
+    </div>
+    <!-- JavaScript Scripts -->
+    <script type="text/javascript" src="js/actionStack.js"></script>
+    <script type="text/javascript" src="js/blitz.js"></script>
+    <script type="text/javascript" src="js/block.js"></script>
+    <script type="text/javascript" src="js/catch.js"></script>
+    <script type="text/javascript" src="js/dice.js"></script>
+    <script type="text/javascript" src="js/dodge.js"></script>
+    <script type="text/javascript" src="js/field.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
+    <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/move.js"></script>
+    <script type="text/javascript" src="js/outSquare.js"></script>
+    <script type="text/javascript" src="js/path.js"></script>
+    <script type="text/javascript" src="js/player.js"></script>
+    <script type="text/javascript" src="js/sprint.js"></script>
+    <script type="text/javascript" src="js/square.js"></script>
+    <script type="text/javascript" src="js/standup.js"></script>
+    <script type="text/javascript" src="js/throwing.js"></script>
+  </body>
+</html>
+
