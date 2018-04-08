@@ -13,6 +13,7 @@ Blitz.prototype.rollDice = function() {
 
 Blitz.prototype.execute = function() {
   gGame.actions.blitzPlayer = gGame.selectedPlayer;
+  gGame.selectedPlayer.mv--;
   gGame.actions.next();
 }
 
