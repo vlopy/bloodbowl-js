@@ -87,6 +87,7 @@ Catch.prototype.execute = function() {
     }
     this.player.catchBall();
   } else {
+    gGame.actions.turnover();
     this.dice.comments(this.player  + ': drop the ball');
     this.player.square.ballRebound();
   }
