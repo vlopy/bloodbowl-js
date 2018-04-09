@@ -69,6 +69,7 @@ ActionStack.prototype.downPlayers = function() {
   this.down.forEach(function(p) {
     if(p.ball) {
       ballSquare = p.square;
+      comments(p + ' drops the ball!');
       p.dropBall();
     }
     p.down(0, 0);
@@ -149,10 +150,8 @@ ActionStack.prototype.prepend = function(action) {
             break;
         }
       });
-      console.log(movement);
       if(movement >= 0) {
         if(movement < sPlayer.sprint) {
-          console.log('add sprints');
           // Add the blitz action
           this.stack.unshift(action);
           this.div.prepend(action.button());
@@ -172,7 +171,6 @@ ActionStack.prototype.prepend = function(action) {
           replayActions.pop();
           // Remove the last square of the move
           sprintSquare = replay.squares.pop();
-          console.log(replay);
           if(replay.size() > 0) {
             this.append(replay);
             this.append(new Sprint(replay.lastSquare(), sprintSquare));
