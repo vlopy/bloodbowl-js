@@ -63,6 +63,8 @@ Block.prototype.execute = function() {
   var my_block = this;
   this.dice.comments(this.attacker + ' block: ');
   this.attacker.blockAction = true;
+  // Hide buttons to force users to click on dice results
+  this.dice.hideButtons();
   // Add the dices in the GUI
   if(this.dice.result.length == 1) {
     switch(this.dice.result[0]) {
@@ -103,8 +105,6 @@ Block.prototype.execute = function() {
       }
     });
   }
-  // Hide buttons to force users to click on dice results
-  this.dice.hideButtons();
 }
 
 Block.prototype.addLinks = function(dice, link) {
