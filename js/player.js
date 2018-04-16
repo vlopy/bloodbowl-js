@@ -446,7 +446,7 @@ Player.prototype.stats = function() {
   return '<table class="player-stats"><caption>' + this.name + ' (' + this.team + ')' +
     '</caption>' + 
     '<tbody>' +
-    '<tr><td>Race</td><td>' + gGame.teams[this.team].race + '</td>' +
+    '<tr><td>Race</td><td>' + gGame.team(this.team).desc.race + '</td>' +
     '<tr><td>Position</td><td>' + this.position + '</td>' +
     '<tr><td>Movement</td><td>' + this.movement + '</td>' +
     '<tr><td>Strength</td><td>' + this.strength + '</td>' +

@@ -15,9 +15,9 @@ var Field = function(x_max, y_max, homeTeam, visitorTeam) {
       }
       // Create the square (check if the square is in the end zone)
       if(i == this.xMax - 1) {
-        square = new Square(i, j, homeTeam);
+        square = new Square(i, j, homeTeam.name);
       } else if(i == 0) {
-        square = new Square(i, j, visitorTeam);
+        square = new Square(i, j, visitorTeam.name);
       } else {
         square = new Square(i, j, undefined);
       }

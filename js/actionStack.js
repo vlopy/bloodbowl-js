@@ -47,8 +47,8 @@ ActionStack.prototype.next = function() {
       this.downPlayers();
     }
     // Detect end of turn and turnover
-    if(this._turnover || 
-      (this.teamWithBall == gGame.currentTeam() && gGame.teamWithBall != gGame.currentTeam())) {
+    if(this._turnover ||
+      (this.teamWithBall == gGame.currentTeam().name && gGame.teamWithBall != gGame.currentTeam().name)) {
       gGame.newRound();
     } else {
       // Detect end of the turn

@@ -5,7 +5,7 @@
 var Block = function(attackerPlayer, defenderPlayer) {
   this.id = 'block';
   this.html = undefined;
-  //this.down = [];
+  this.reroll = undefined;
   this.attacker = attackerPlayer;
   this.defender = defenderPlayer;
   this.diceNb = attackerPlayer.fight(defenderPlayer);
@@ -34,9 +34,9 @@ Block.prototype.rollDice = function() {
     rbutton.hide();
   }
   if(this.diceNb < 0) {
-    $('.dices-class').css('background', gGame.teams[this.defender.team].color);
+    $('.dices-class').css('background', gGame.team(this.defender.team).desc.color);
   } else if(this.diceNb > 1) {
-    $('.dices-class').css('background', gGame.teams[this.attacker.team].color);
+    $('.dices-class').css('background', gGame.team(this.attacker.team).desc.color);
   }
   this.dice.rollBlockDice(this.attacker + ' VS ' + this.defender);
   if(disableReroll) {

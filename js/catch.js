@@ -32,7 +32,7 @@ Catch.prototype.rollDice = function() {
   }
   if(this.reroll == undefined) {
     if(this.player.skills.indexOf(skill) == -1) {
-      if(gGame.reroll && gGame.currentTeam() == this.player.team) {
+      if(gGame.reroll && gGame.currentTeam().name == this.player.team) {
         disableReroll = false;
         rbutton.text('Re-Roll (team)');
         this.reroll = 'team';

@@ -188,15 +188,14 @@ function comments(msg) {
 
 // Entry Point
 function match() {
-  gGame = new Game('OrclandRaiders', 'ReiklandReavers');
+  gGame = new Game(OrclandRaiders, ReiklandReavers);
   gGame.field.showCoords();
-  gGame.kickOff(function() {
-    // Add the ball
-    gGame.addBall();
-    // End of the kick off phase
-    gGame.isKickOff = false;
-    // Start the new team turn
-    gGame.prepareTeams();
-  });
+  gGame.kickOff();
+  // Add the ball
+  gGame.addBall();
+  // End of the kick off phase
+  gGame.isKickOff = false;
+  // Start the new team turn
+  gGame.prepareTeams();
 }
 

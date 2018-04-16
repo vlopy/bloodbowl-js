@@ -26,11 +26,11 @@ var Game = function(homeTeam, visitorTeam) {
   // The action stack
   this.actions = new ActionStack();
   // The teams
-  this.teams = {};
+  this.teams = [];
   // The home team use the left part of the field
-  this.teams[homeTeam] = { 'name': homeTeam, 'players': [], 'score': 0 };
+  this.teams.push({ 'name': homeTeam.name, 'players': [], 'score': 0, 'desc': homeTeam });
   // The visitor team use the right part of the field
-  this.teams[visitorTeam] = { 'name': visitorTeam, 'players': [], 'score': 0 };
+  this.teams.push({ 'name': visitorTeam.name, 'players': [], 'score': 0, 'desc': visitorTeam });
   // The number of turn
   this.turnNb = 1;
   // Kick off phase, do not try to append catch actions on ball rebounds
@@ -39,17 +39,25 @@ var Game = function(homeTeam, visitorTeam) {
   this.halfTimeNb = 4;
 }
 
+Game.prototype.team = function(teamName) {
+  if(this.teams[0].name == teamName) {
+    return this.teams[0];
+  } else {
+    return this.teams[1];
+  }
+}
+
 Game.prototype.addBall = function() {
   var d6 = new Dice(1), d8 = new Dice(1);
   var ballSquare, xDis, yDis, squareDis, catchAction, result;
   if(this._currentTeam == undefined) {
-    if(this.firstTeamToPlay == Object.keys(this.teams)[0]) {
+    if(this.firstTeamToPlay == this.teams[0]) {
       ballSquare = this.field.square(6, 7);
     } else {
       ballSquare = this.field.square(19, 7);
     }
   } else {
-    if(this._currentTeam == Object.keys(this.teams)[0]) {
+    if(this._currentTeam == this.teams[0]) {
       ballSquare = this.field.square(6, 7);
     } else {
       ballSquare = this.field.square(19, 7);
@@ -103,7 +111,7 @@ Game.prototype.addBall = function() {
 }
 
 Game.prototype.addStandingPlayer = function(my_player, x, y) {
-  if(my_player.team == Object.keys(this.teams)[0]) {
+  if(my_player.team == this.teams[0].name) {
     // Place players of the home team (using the left part of the field)
     this.field.square(x, y).addPlayer(my_player, '');
   } else {
@@ -118,22 +126,26 @@ Game.prototype.currentTeam = function() {
 }
 
 Game.prototype.opponentTeam = function() {
-  var names = Object.keys(this.teams);
-  if(this._currentTeam == names[0]) {
-    return names[1];
+  if(this._currentTeam == this.teams[0]) {
+    return this.teams[1];
   } else {
-    return names[0];
+    return this.teams[0];
   }
 }
 
 Game.prototype.useReRoll = function(teamName) {
-  var my_team = this.teams[teamName];
-  my_team.reroll--;
+  var my_team;
+  if(teamName == this.teams[0].name) {
+    my_team = this.teams[0];
+  } else {
+    my_team = this.teams[1];
+  }
+  my_team.desc.reroll--;
   this.reroll = false;
-  my_team.html.html(my_team.reroll);
+  my_team.html.html(my_team.desc.reroll);
 }
 
-Game.prototype.kickOff = function(callback) {
+Game.prototype.kickOff = function() {
   var d6 = new Dice(4);
   this.isKickOff = true;
   // Choose the team that starts the match
@@ -141,78 +153,66 @@ Game.prototype.kickOff = function(callback) {
     d6.rollD6('Select the first team to play: ');
     d6.comments('Select the first team to play: ');
     if(d6.result[0] + d6.result[1] < d6.result[2] + d6.result[3]) {
-      this.firstTeamToPlay = Object.keys(this.teams)[1];
+      this.firstTeamToPlay = this.teams[1];
       this._currentTeam = undefined;
     } else {
-      this.firstTeamToPlay = Object.keys(this.teams)[0];
+      this.firstTeamToPlay = this.teams[0];
       this._currentTeam = undefined;
     }
   }
   // Load players of every team
-  $.each(this.teams, function(teamName, desc) {
-    $.getJSON('config/' + teamName + '/roster.json', function(data1) {
-      var placementJSON;
-      if(teamName == Object.keys(gGame.teams)[0]) {
-        $('#home-score').html(desc.score);
-        $('#home-score').css('background', data1.color);
-        desc.html = $('#home-reroll');
+  this.teams.forEach(function(teamData) {
+    if(teamData == gGame.teams[0]) {
+      $('#home-score').html(teamData.score);
+      $('#home-score').css('background', teamData.desc.color);
+      teamData.html = $('#home-reroll');
+    } else {
+      $('#visitor-score').html(teamData.score);
+      $('#visitor-score').css('background', teamData.desc.color);
+      teamData.html = $('#visitor-reroll');
+    }
+    teamData.html.css('background', teamData.desc.color);
+    teamData.html.html(teamData.desc.reroll);
+    if(gGame._currentTeam == undefined) {
+      gGame._currentTeam = gGame.firstTeamToPlay;
+      if(teamData == gGame.firstTeamToPlay) {
+        placement = teamData.desc.attack;
       } else {
-        $('#visitor-score').html(desc.score);
-        $('#visitor-score').css('background', data1.color);
-        desc.html = $('#visitor-reroll');
+        placement = teamData.desc.defence;
       }
-      desc.html.css('background', data1.color);
-      desc.html.html(data1.reroll);
-      desc.reroll = data1.reroll;
-      desc.race = data1.race;
-      desc.color = data1.color;
-      if(gGame._currentTeam == undefined) {
-        gGame._currentTeam = gGame.firstTeamToPlay;
-        if(teamName == gGame.firstTeamToPlay) {
-          placementJSON = 'attack.json';
-        } else {
-          placementJSON = 'defence.json';
-        }
+    } else {
+      if(teamData == gGame._currentTeam) {
+        placement = teamData.desc.attack;
       } else {
-        if(teamName == gGame._currentTeam) {
-          placementJSON = 'attack.json';
-        } else {
-          placementJSON = 'defence.json';
-        }
+        placement = teamData.desc.defence;
       }
-      $.getJSON('config/' + teamName + '/' + placementJSON, function(data2) {
-        if(desc.players.length == 0) {
-          // Beginning of the match, create players
-          data1.players.forEach(function(p) {
-            var position, my_player = new Player(teamName, p.name, p.number, p.position,
-              p.movement, p.strength, p.agility, p.armor, p.skills);
-            desc.players.push(my_player);
-            // Place the players
-            position = data2[p.number];
-            if(position != undefined) {
-              gGame.addStandingPlayer(my_player, position.x, position.y);
-            }
-          });
-        } else {
-          // Use the existing players
-          desc.players.forEach(function(p) {
-            if(p.state == 'standing' || p.state == 'down' || p.state == 'stunned') {
-              //TODO: KO
-              p.state = 'substitute';
-            }
-            // Place the players
-            position = data2[p.number];
-            if(position != undefined) {
-              gGame.addStandingPlayer(p, position.x, position.y);
-            }
-          });
-        }
-        // After parsing the last team position file
-        if(teamName == Object.keys(gGame.teams)[1]) {
-          callback();
+    }
+    if(teamData.players.length == 0) {
+      // Beginning of the match, create players
+      teamData.desc.players.forEach(function(p) {
+        var position, my_player = new Player(teamData.name, p.name, p.number, p.position,
+          p.movement, p.strength, p.agility, p.armor, p.skills);
+        teamData.players.push(my_player);
+        // Place the players
+        position = placement[p.number];
+        if(position != undefined) {
+          gGame.addStandingPlayer(my_player, position.x, position.y);
         }
       });
-    });
+    } else {
+      // Use the existing players
+      teamData.players.forEach(function(p) {
+        if(p.state == 'standing' || p.state == 'down' || p.state == 'stunned') {
+          //TODO: KO
+          p.state = 'substitute';
+        }
+        // Place the players
+        position = placement[p.number];
+        if(position != undefined) {
+          gGame.addStandingPlayer(p, position.x, position.y);
+        }
+      });
+    }
   });
 }
 
@@ -238,17 +238,16 @@ Game.prototype.newRound = function() {
     this.turnNb++;
     $('#turn-counter').html(this.turnNb);
     // Play the kick-off
-    this.kickOff(function() {
-      // Add the ball
-      gGame.addBall();
-      // End of the kick off phase
-      gGame.isKickOff = false;
-      // Start the new team turn
-      gGame.prepareTeams();
-    });
+    this.kickOff();
+    // Add the ball
+    gGame.addBall();
+    // End of the kick off phase
+    gGame.isKickOff = false;
+    // Start the new team turn
+    gGame.prepareTeams();
   } else {
     // Remove the end turn background
-    this.teams[this._currentTeam].players.forEach(function(p) {
+    this._currentTeam.players.forEach(function(p) {
       if(p.state == 'standing' && p.square != undefined) {
         p.square.html.removeClass('completedTurn');
       }
@@ -267,14 +266,14 @@ Game.prototype.newRound = function() {
 Game.prototype.prepareTeams = function() {
   var my_game = this;
   // Enable the team reroll
-  if(this.teams[this._currentTeam].reroll > 0) {
+  if(this._currentTeam.desc.reroll > 0) {
     this.reroll = true;
   } else {
     this.reroll = false;
   }
   // Update the player list
   this.playerTurns = [];
-  this.teams[this._currentTeam].players.forEach(function(p) {
+  this._currentTeam.players.forEach(function(p) {
     if(p.state == 'standing' || p.state == 'down' || p.state == 'stunned') {
       if(p.state == 'down') {
         p.square.html.attr('class', 'square down');
@@ -285,8 +284,8 @@ Game.prototype.prepareTeams = function() {
       p.newTurn();
     }
   });
-  comments('<b>' + this._currentTeam + ' plays with ' + this.playerTurns.length + ' players</b>');
-  $('#turn-counter').css('background', this.teams[this._currentTeam].color);
+  comments('<b>' + this._currentTeam.name + ' plays with ' + this.playerTurns.length + ' players</b>');
+  $('#turn-counter').css('background', this._currentTeam.desc.color);
 }
 
 Game.prototype.hasTurn = function(player) {

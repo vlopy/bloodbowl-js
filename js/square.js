@@ -56,8 +56,7 @@ Square.prototype.removeBall = function() {
 }
 
 Square.prototype.addPlayer = function(my_player, stateClass) {
-  var old_square = my_player.square, imageString;
-  var color = gGame.teams[my_player.team].color, race = gGame.teams[my_player.team].race;
+  var old_square = my_player.square, imageString, myTeam = gGame.team(my_player.team).desc;
   // Delete the player of the field
   if(old_square != undefined) {
     old_square.removePlayer();
@@ -67,7 +66,7 @@ Square.prototype.addPlayer = function(my_player, stateClass) {
   my_player.square = this;
   if(my_player.ball) {
     this.html.append(
-      '<img src="images/coins/' + color + '/' + this.player.number + '.png">' +
+      '<img src="images/coins/' + myTeam.color + '/' + this.player.number + '.png">' +
       '<img src="images/positions/' + this.player.position +
       '-ball.png" class="player-position" ' +
       'onclick="selectPlayer(' + this.x + ', ' + this.y + '); event.stopPropagation();" ' +
@@ -75,7 +74,7 @@ Square.prototype.addPlayer = function(my_player, stateClass) {
       .css('opacity', 0.3).fadeTo(300, 1);
   } else {
     this.html.append(
-      '<img src="images/coins/' + color + '/' + this.player.number + '.png">' +
+      '<img src="images/coins/' + myTeam.color + '/' + this.player.number + '.png">' +
       '<img src="images/positions/' + this.player.position + 
       '.png" class="player-position" ' +
       'onclick="selectPlayer(' + this.x + ', ' + this.y + '); event.stopPropagation();" ' +
@@ -94,17 +93,16 @@ Square.prototype.addPlayer = function(my_player, stateClass) {
 Square.prototype.isTouchdown = function() {
   if(this.player != undefined && this.player.ball && this.player.team == this.touchdownTeam) {
     comments('<h2>Touchdown!!</h2>');
-    gGame.teams[gGame.currentTeam()].score++;
+    gGame.currentTeam().score++;
     gGame.newRound();
     gGame.field.reset();
-    gGame.kickOff(function() {
-      // Add the ball
-      gGame.addBall();
-      // End of the kick off phase
-      gGame.isKickOff = false;
-      // Start the new team turn
-      gGame.prepareTeams();
-    });
+    gGame.kickOff();
+    // Add the ball
+    gGame.addBall();
+    // End of the kick off phase
+    gGame.isKickOff = false;
+    // Start the new team turn
+    gGame.prepareTeams();
   }
 }
 
@@ -147,7 +145,7 @@ Square.prototype.aroundSquares = function() {
 Square.prototype.aroundPlayers = function(team_player) {
   var players = [];
   this.aroundSquares().forEach(function(s) {
-    if(s.hasPlayer() && s.player.team != team_player && s.player.state == 'standing') {
+    if(s.hasPlayer() && s.player.team != team_player.name && s.player.state == 'standing') {
       players.push(s.player);
     }
   });
