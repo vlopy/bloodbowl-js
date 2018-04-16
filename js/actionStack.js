@@ -35,6 +35,7 @@ ActionStack.prototype.execute = function() {
 }
 
 ActionStack.prototype.next = function() {
+  var sPlayer = gGame.selectedPlayer;
   if(this.stack.length > 0) {
     // Execute the first action
     this.div.children().first().remove();
@@ -51,13 +52,11 @@ ActionStack.prototype.next = function() {
       gGame.newRound();
     } else {
       // Detect end of the turn
-      if(gGame.selectedPlayer != undefined && !gGame.selectedPlayer.ball &&
-        (gGame.selectedPlayer.mv == 0 && !gGame.selectedPlayer.ball ||
-          gGame.selectedPlayer.mv == gGame.selectedPlayer.sprint &&
-          gGame.selectedPlayer.aroundMe().length > 0 ||
-        this.pass ||
-        this.handoff ||
-        gGame.selectedPlayer.blockAction && this.blitzPlayer != gGame.selectedPlayer)) {
+      if(sPlayer != undefined && !sPlayer.ball &&
+        (sPlayer.mv == 0 && !sPlayer.ball ||
+          sPlayer.mv == sPlayer.sprint && sPlayer.aroundMe().length > 0 ||
+          sPlayer.throwingAction ||
+          sPlayer.blockAction && this.blitzPlayer != sPlayer)) {
         gGame.endTurn();
       }
     }
