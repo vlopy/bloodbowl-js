@@ -216,6 +216,10 @@ Game.prototype.kickOff = function() {
   });
 }
 
+Game.prototype.isHalfTime = function() {
+  return this._currentTeam != this.firstTeamToPlay && this.turnNb == this.halfTimeNb;
+}
+
 Game.prototype.newRound = function() {
   // Clean the turn variables
   if(this.selectedPlayer != undefined) {
@@ -228,7 +232,7 @@ Game.prototype.newRound = function() {
   if(this._currentTeam != this.firstTeamToPlay && this.turnNb == 2  * this.halfTimeNb) {
     comments('<h3>End of the match!</h3>');
     this.field.reset();
-  } else if(this._currentTeam != this.firstTeamToPlay && this.turnNb == this.halfTimeNb) {
+  } else if(this.isHalfTime()) {
     comments('<h3>Half Time!</h3>');
     // Choose the team that receives the ball
     this.firstTeamToPlay = this._currentTeam;

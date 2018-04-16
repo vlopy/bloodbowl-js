@@ -91,18 +91,21 @@ Square.prototype.addPlayer = function(my_player, stateClass) {
 }
 
 Square.prototype.isTouchdown = function() {
+  var isHT = gGame.isHalfTime();
   if(this.player != undefined && this.player.ball && this.player.team == this.touchdownTeam) {
     comments('<h2>Touchdown!!</h2>');
     gGame.currentTeam().score++;
     gGame.newRound();
-    gGame.field.reset();
-    gGame.kickOff();
-    // Add the ball
-    gGame.addBall();
-    // End of the kick off phase
-    gGame.isKickOff = false;
-    // Start the new team turn
-    gGame.prepareTeams();
+    if(!isHT) {
+      gGame.field.reset();
+      gGame.kickOff();
+      // Add the ball
+      gGame.addBall();
+      // End of the kick off phase
+      gGame.isKickOff = false;
+      // Start the new team turn
+      gGame.prepareTeams();
+    }
   }
 }
 
