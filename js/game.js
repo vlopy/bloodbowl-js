@@ -36,7 +36,7 @@ var Game = function(homeTeam, visitorTeam) {
   // Kick off phase, do not try to append catch actions on ball rebounds
   this.isKickOff = false;
   // The half time turn number
-  this.halfTimeNb = 4;
+  this.halfTimeNb = 8;
 }
 
 Game.prototype.team = function(teamName) {
